@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary  # jika pakai PostgreSQL
+python-dotenv     # optional, untuk .env config
+alembic
+email-validator
+python-jose[cryptography]
+passlib[bcrypt]
