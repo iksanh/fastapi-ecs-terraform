@@ -141,25 +141,25 @@ resource "aws_ecr_repository" "fastapi_repo" {
 
 
 #CREATE NULL RESOURCE 
-resource "null_resource" "docker_build_push" {
-  depends_on = [ aws_ecr_repository.fastapi_repo ]
-  provisioner "local-exec" {
-    command = <<EOT
-aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.fastapi_repo.repository_url}
-docker build -t fastapi-app:v1 ${path.module}
-docker tag fastapi-app:v1 ${aws_ecr_repository.fastapi_repo.repository_url}:v1
-docker push ${aws_ecr_repository.fastapi_repo.repository_url}:v1
-EOT
+# resource "null_resource" "docker_build_push" {
+#   depends_on = [ aws_ecr_repository.fastapi_repo ]
+#   provisioner "local-exec" {
+#     command = <<EOT
+# aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.fastapi_repo.repository_url}
+# docker build -t fastapi-app:v1 ${path.module}
+# docker tag fastapi-app:v1 ${aws_ecr_repository.fastapi_repo.repository_url}:v1
+# docker push ${aws_ecr_repository.fastapi_repo.repository_url}:v1
+# EOT
     
-  }
-}
+#   }
+# }
 
 
 
 #CREATE TASK DEFINITION 
 resource "aws_ecs_task_definition" "fastapi_task" {
 
-  depends_on = [null_resource.docker_build_push] 
+  # depends_on = [null_resource.docker_build_push] 
   family                   = "fastapi-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
